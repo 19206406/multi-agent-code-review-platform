@@ -7,4 +7,7 @@
     <Project Path="scr/BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj" Id="ff356a56-f9fc-40d5-a3a4-9754ef89ea16" />
   </Folder>
   <Folder Name="/scr/Services/" />
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
 </Solution>

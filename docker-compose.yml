@@ -1,0 +1,9 @@
+services:
+  
+  # Infrastructura 
+  redis: 
+    image: redis:7-alpine
+    networks: 
+      - microservices-networks 
+
+  # Servicios 

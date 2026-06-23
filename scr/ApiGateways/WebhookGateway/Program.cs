@@ -1,23 +1,21 @@
+using FastEndpoints;
+using WebhookGateway.Infrastructure.Redis;
+using WebhookGateway.Infrastructure.Redis.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// FastEndpoints 
+builder.Services.AddFastEndpoints();
 
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// Redis 
+builder.Services.AddRedisCache(builder.Configuration);
+builder.Services.AddSingleton<ICacheService, CacheService>(); 
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
-
-app.UseHttpsRedirection();
+// FastEndpoints Middleware 
+app.UseFastEndpoints(); 
 
 app.UseAuthorization();
-
-app.MapControllers();
 
 app.Run();
