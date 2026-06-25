@@ -1,9 +1,22 @@
 services:
-  
-  # Infrastructura 
-  redis: 
+  redis:
     image: redis:7-alpine
+    networks:
+      - microservices-network
+  
+  kafka: 
+    image: apache/kafka:3.9.0
+    environment: 
+      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
     networks: 
-      - microservices-networks 
+      - microservices-network 
+  
+  kafka-ui: 
+    environment: 
+      KAFKA_CLUSTERS_0_NAME: local-dev 
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+      SERVER_SERVLET_CONTEXT_PATH: /kafka-ui 
 
-  # Servicios 
+networks:
+  microservices-network:
+    driver: bridge

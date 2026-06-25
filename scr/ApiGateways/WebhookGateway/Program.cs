@@ -1,4 +1,6 @@
 using FastEndpoints;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using WebhookGateway.Infrastructure.Redis;
 using WebhookGateway.Infrastructure.Redis.Services;
 
@@ -9,12 +11,26 @@ builder.Services.AddFastEndpoints();
 
 // Redis 
 builder.Services.AddRedisCache(builder.Configuration);
-builder.Services.AddSingleton<ICacheService, CacheService>(); 
+builder.Services.AddSingleton<ICacheService, CacheService>();
+
+// Health-check 
+builder.Services.AddHealthChecks()
+    .AddRedis(
+    redisConnectionString: builder.Configuration["Redis:ConnectionString"]!,
+    name: "redis:cache",
+    tags: ["cache", "infrastructure"]); 
 
 var app = builder.Build();
 
 // FastEndpoints Middleware 
-app.UseFastEndpoints(); 
+app.UseFastEndpoints();
+
+// Health-check Middleware 
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    Predicate = _=> true, 
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+}); 
 
 app.UseAuthorization();
 
