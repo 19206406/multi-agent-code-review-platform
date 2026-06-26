@@ -2,7 +2,7 @@
 
 namespace WebhookGateway.Infrastructure.Redis
 {
-    public static class RedisServicesExtensions
+    public static class RedisServiceExtensions
     {
         public static IServiceCollection AddRedisCache(this IServiceCollection services, IConfiguration configuration)
         {
