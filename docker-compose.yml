@@ -5,7 +5,7 @@ services:
       - microservices-network
 
   kafka:
-    image: apache/kafka:3.9.0
+    image: confluentinc/cp-kafka:8.2.2
     networks:
       - microservices-network
 

@@ -2,6 +2,7 @@ using FastEndpoints;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using WebhookGateway.Infrastructure.Kafka;
+using WebhookGateway.Infrastructure.Kafka.Service;
 using WebhookGateway.Infrastructure.Redis;
 using WebhookGateway.Infrastructure.Redis.Services;
 
@@ -15,7 +16,7 @@ builder.Services.AddRedisCache(builder.Configuration);
 builder.Services.AddSingleton<ICacheService, CacheService>();
 
 // Kafka 
-builder.Services.AddKafkaProducer(builder.Configuration); 
+builder.Services.AddKafkaProducer(builder.Configuration);
 // handler of each slice 
 
 // Health-check 
@@ -23,7 +24,10 @@ builder.Services.AddHealthChecks()
     .AddRedis(
     redisConnectionString: builder.Configuration["Redis:ConnectionString"]!,
     name: "redis:cache",
-    tags: ["cache", "infrastructure"]); 
+    tags: ["cache", "infrastructure"])
+    .AddCheck<KafkaHealthCheck>(
+    name: "kafka:broker",
+    tags: ["messaging", "infrastructure"]); 
 
 var app = builder.Build();
 
@@ -31,12 +35,10 @@ var app = builder.Build();
 app.UseFastEndpoints();
 
 // Health-check Middleware 
-app.MapHealthChecks("/health", new HealthCheckOptions
+app.MapHealthChecks("/health/ready", new HealthCheckOptions
 {
     Predicate = _=> true, 
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 }); 
-
-app.UseAuthorization();
 
 app.Run();

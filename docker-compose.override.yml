@@ -24,14 +24,14 @@ services:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: "broker,controller"
 
-      # Listeners
+      # Listeners — Confluent maneja bien la separación listeners/advertised
       KAFKA_LISTENERS: "PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093"
       KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092"
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT"
       KAFKA_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
       KAFKA_INTER_BROKER_LISTENER_NAME: "PLAINTEXT"
 
-      # Cluster
+      # Cluster KRaft
       KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
       CLUSTER_ID: "MkU3OEVBNTcwNTJENDM2Qk"
 
@@ -41,21 +41,10 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
 
-      # Logging
-      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
-
     volumes:
       - kafka-data:/var/lib/kafka/data
-
     healthcheck:
-      test:
-        [
-          "CMD",
-          "/opt/kafka/bin/kafka-topics.sh",
-          "--bootstrap-server",
-          "localhost:9092",
-          "--list"
-        ]
+      test: ["CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list"]
       interval: 15s
       timeout: 10s
       retries: 5
