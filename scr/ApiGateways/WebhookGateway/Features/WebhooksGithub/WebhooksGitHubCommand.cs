@@ -1,6 +1,6 @@
-﻿namespace WebhookGateway.Features.WebhooksGithub
+﻿using BuildingBlocks.CQRS;
+
+namespace WebhookGateway.Features.WebhooksGithub
 {
-    public class WebhooksGitHubCommand
-    {
-    }
+    public record WebhooksGitHubCommand(string DeliveryId, string Signature, string EventType, string RawPayload) : ICommand; 
 }

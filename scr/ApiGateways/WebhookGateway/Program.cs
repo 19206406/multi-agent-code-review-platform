@@ -1,3 +1,4 @@
+using BuildingBlocks.Middlewares;
 using FastEndpoints;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -27,12 +28,19 @@ builder.Services.AddHealthChecks()
     tags: ["cache", "infrastructure"])
     .AddCheck<KafkaHealthCheck>(
     name: "kafka:broker",
-    tags: ["messaging", "infrastructure"]); 
+    tags: ["messaging", "infrastructure"]);
+
+//TODO: webhook -> tipo repositorio --- manejar solo tres tipos de eventos (opened, synchronize, reopened) 
+// Activar el tunel de ngrok con github. --- comando: ngrok start webhook-gateway
 
 var app = builder.Build();
 
 // FastEndpoints Middleware 
 app.UseFastEndpoints();
+
+// custom exceptions
+app.UseExceptionHandler(); 
+app.UseCustomExceptionHandler(); 
 
 // Health-check Middleware 
 app.MapHealthChecks("/health/ready", new HealthCheckOptions

@@ -1,19 +1,38 @@
 ﻿using FastEndpoints;
+using MediatR;
 
 namespace WebhookGateway.Features.WebhooksGithub
 {
-    public record WebhooksGitHubRequest(int id); 
-    public class WebhooksGithubEndpoint : Endpoint<WebhooksGitHubRequest>
+    public class WebhooksGithubEndpoint : EndpointWithoutRequest
     {
+        private readonly IMediator _mediator;
+
+        public WebhooksGithubEndpoint(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
         public override void Configure()
         {
-            Get("api/webhooks");
+            Get("webhooks/github");
             AllowAnonymous(); 
         }
 
-        public override Task HandleAsync(WebhooksGitHubRequest req, CancellationToken ct)
+        public override async Task HandleAsync(CancellationToken ct)
         {
-            return base.HandleAsync(req, ct);
+
+            var deliveryId = HttpContext.Request.Headers["X-GitHub-Delivery"].ToString();
+            var signature = HttpContext.Request.Headers["X-Hub-Signature-256"].ToString();
+            var eventType = HttpContext.Request.Headers["X-GitHub-Event"].ToString();
+
+            // webhook body 
+            var payload = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync(ct);
+
+            var command = new WebhooksGitHubCommand(deliveryId, signature, eventType, payload);
+
+            await _mediator.Send(command); 
+
+            await Send.OkAsync(); 
         }
     }
 }
