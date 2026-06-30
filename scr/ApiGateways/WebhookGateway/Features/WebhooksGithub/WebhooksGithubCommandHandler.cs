@@ -3,15 +3,22 @@ using MediatR;
 
 namespace WebhookGateway.Features.WebhooksGithub
 {
-    public class WebhooksGithubCommandHandler : ICommandHandler<WebhooksGitHubCommand>
+    public class WebhooksGithubCommandHandler : ICommandHandler<WebhooksGitHubCommand, WebhooksGithubResponse>
     {
         public WebhooksGithubCommandHandler()
         {
             
         }
 
-        public Task<Unit> Handle(WebhooksGitHubCommand command, CancellationToken cancellationToken)
+        public async Task<WebhooksGithubResponse> Handle(WebhooksGitHubCommand command, CancellationToken cancellationToken)
         {
+            if (command.EventType == "ping")
+                return new WebhooksGithubResponse(true);
+
+            if (command.EventType != "pull_request")
+                return new WebhooksGithubResponse(true); 
+
+            // 
 
 
             throw new NotImplementedException();

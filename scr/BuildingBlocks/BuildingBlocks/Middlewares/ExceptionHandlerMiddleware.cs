@@ -3,6 +3,7 @@ using BuildingBlocks.Exceptions.Common;
 using BuildingBlocks.Models;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
+using InvalidOperationException = BuildingBlocks.Exceptions.InvalidOperationException;
 
 namespace BuildingBlocks.Middlewares
 {
@@ -33,15 +34,6 @@ namespace BuildingBlocks.Middlewares
 
             var problemDetails = exception switch
             {
-                NotFoundException notFoundException => new ProblemDetailsResponse
-                {
-                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                    Title = "Resource not found",
-                    Status = StatusCodes.Status404NotFound,
-                    Instance = context.Request.Path,
-                    Errors = new List<string> { notFoundException.Message }
-                },
-
                 BadRequestException badRequestException => new ProblemDetailsResponse
                 {
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
@@ -51,13 +43,22 @@ namespace BuildingBlocks.Middlewares
                     Errors = new List<string> { badRequestException.Message }
                 },
 
-                UnauthorizedAccessException unauthorizedException => new ProblemDetailsResponse
+                BusinessException businessException => new ProblemDetailsResponse
                 {
-                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                    Title = "Unauthorized access.",
-                    Status = StatusCodes.Status401Unauthorized,
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.8", 
+                    Title = "Bussines rule violation", 
+                    Status = StatusCodes.Status409Conflict, 
+                    Instance = context.Request.Path, 
+                    Errors = new List<string> { businessException.Message }
+                },
+
+                ConflictException conflictException => new ProblemDetailsResponse
+                {
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.8",
+                    Title = "Conflict",
+                    Status = StatusCodes.Status409Conflict,
                     Instance = context.Request.Path,
-                    Errors = new List<string> { unauthorizedException.Message }
+                    Errors = new List<string> { conflictException.Message }
                 },
 
                 ForbiddenException forbiddenException => new ProblemDetailsResponse
@@ -69,13 +70,31 @@ namespace BuildingBlocks.Middlewares
                     Errors = new List<string> { forbiddenException.Message }
                 },
 
-                ConflictException conflictException => new ProblemDetailsResponse
+                InvalidOperationException invalidOperationException => new ProblemDetailsResponse
                 {
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.5.8",
-                    Title = "Conflict",
+                    Title = "Invalid operation",
                     Status = StatusCodes.Status409Conflict,
                     Instance = context.Request.Path,
-                    Errors = new List<string> { conflictException.Message }
+                    Errors = new List<string> { invalidOperationException.Message }
+                },
+
+                NotFoundException notFoundException => new ProblemDetailsResponse
+                {
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                    Title = "Resource not found",
+                    Status = StatusCodes.Status404NotFound,
+                    Instance = context.Request.Path,
+                    Errors = new List<string> { notFoundException.Message }
+                },
+
+                UnauthorizedAccessException unauthorizedException => new ProblemDetailsResponse
+                {
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                    Title = "Unauthorized access.",
+                    Status = StatusCodes.Status401Unauthorized,
+                    Instance = context.Request.Path,
+                    Errors = new List<string> { unauthorizedException.Message }
                 },
 
                 BaseException baseException => new ProblemDetailsResponse

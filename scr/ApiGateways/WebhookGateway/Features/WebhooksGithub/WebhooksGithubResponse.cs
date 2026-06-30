@@ -1,6 +1,4 @@
 ﻿namespace WebhookGateway.Features.WebhooksGithub
 {
-    public class WebhooksGithubResponse
-    {
-    }
+    public record WebhooksGithubResponse(bool statusCode); 
 }

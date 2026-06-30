@@ -21,12 +21,15 @@ services:
       - "9092:9092"
     environment:
       # KRaft Mode
+      # only one broker 
       KAFKA_NODE_ID: 1
+      # This is set by the broker and the cluster controller
       KAFKA_PROCESS_ROLES: "broker,controller"
 
-      # Listeners — Confluent maneja bien la separación listeners/advertised
+      # Listeners 
       KAFKA_LISTENERS: "PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093"
       KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092"
+      # Since I don't have SSL certificates signed, it won't be used
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT"
       KAFKA_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
       KAFKA_INTER_BROKER_LISTENER_NAME: "PLAINTEXT"
@@ -36,6 +39,7 @@ services:
       CLUSTER_ID: "MkU3OEVBNTcwNTJENDM2Qk"
 
       # Topics
+      # Prevents Kafka from automatically creating topics 
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1

@@ -4,6 +4,7 @@
     <Project Path="scr/ApiGateways/WebhookGateway/WebhookGateway.csproj" />
   </Folder>
   <Folder Name="/scr/BuildingBlocks/">
+    <Project Path="scr/BuildingBlocks/BuildingBlocks.Messaging/BuildingBlocks.Messaging.csproj" Id="e790a129-9200-42ca-b870-b49699352390" />
     <Project Path="scr/BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj" Id="ff356a56-f9fc-40d5-a3a4-9754ef89ea16" />
   </Folder>
   <Folder Name="/scr/Services/" />
