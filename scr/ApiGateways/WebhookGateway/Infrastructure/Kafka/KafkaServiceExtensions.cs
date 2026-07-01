@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using WebhookGateway.Infrastructure.Kafka.Services;
+﻿using WebhookGateway.Infrastructure.Kafka.Services;
 
 namespace WebhookGateway.Infrastructure.Kafka
 {
@@ -13,12 +12,6 @@ namespace WebhookGateway.Infrastructure.Kafka
                 .Bind(configuration.GetSection(KafkaOptions.SectionName))
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
-
-            services.AddSingleton(sp =>
-            {
-                var options = sp.GetRequiredService<IOptions<KafkaOptions>>().Value;
-                return KafkaProducerFactory.Create(options);
-            });
 
             return services; 
        }

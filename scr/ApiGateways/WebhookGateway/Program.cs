@@ -1,24 +1,39 @@
+using BuildingBlocks.Messaging.Kafka.Extensions;
 using BuildingBlocks.Middlewares;
 using FastEndpoints;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using System.Reflection;
+using WebhookGateway.Common.Validation;
 using WebhookGateway.Infrastructure.Kafka;
 using WebhookGateway.Infrastructure.Kafka.Service;
 using WebhookGateway.Infrastructure.Redis;
-using WebhookGateway.Infrastructure.Redis.Services;
+using WebhookGateway.Infrastructure.Redis.Idempotency;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // FastEndpoints 
 builder.Services.AddFastEndpoints();
 
+// MediatR 
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+});
+
 // Redis 
-builder.Services.AddRedisCache(builder.Configuration);
-builder.Services.AddSingleton<ICacheService, CacheService>();
+//builder.Services.AddRedisCache(builder.Configuration);
+//builder.Services.AddSingleton<IRedisIdempotencyService, RedisIdempotencyService>();
 
 // Kafka 
 builder.Services.AddKafkaProducer(builder.Configuration);
 // handler of each slice 
+
+// Kafka Messaging 
+builder.Services.AddKafkaInfratructure(builder.Configuration);
+
+// MACSHA256 Validation 
+builder.Services.AddScoped<IHmacSignatureValidator, HmacSignatureValidator>(); 
 
 // Health-check 
 builder.Services.AddHealthChecks()
@@ -39,7 +54,7 @@ var app = builder.Build();
 app.UseFastEndpoints();
 
 // custom exceptions
-app.UseExceptionHandler(); 
+//app.UseExceptionHandler(); 
 app.UseCustomExceptionHandler(); 
 
 // Health-check Middleware 

@@ -31,7 +31,7 @@ namespace BuildingBlocks.Messaging.Kafka.Producers
         }
 
         protected async Task ProduceAsync
-            (string topic, TKey key, TValue value, Headers? headers = null, CancellationToken cancellationToken)
+            (string topic, TKey key, TValue value, Headers? headers = null, CancellationToken cancellationToken = default)
         {
             var serializedValue = JsonSerializer.Serialize(value);
 
