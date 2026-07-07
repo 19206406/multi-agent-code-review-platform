@@ -1,0 +1,6 @@
+@OrchestratorAgent.Api_HostAddress = http://localhost:5047
+
+GET {{OrchestratorAgent.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

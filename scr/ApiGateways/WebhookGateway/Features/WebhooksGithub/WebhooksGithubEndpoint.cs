@@ -1,5 +1,6 @@
 ﻿using FastEndpoints;
 using MediatR;
+using System.Text.Json;
 
 namespace WebhookGateway.Features.WebhooksGithub
 {
@@ -14,7 +15,7 @@ namespace WebhookGateway.Features.WebhooksGithub
 
         public override void Configure()
         {
-            Get("webhooks/github");
+            Post("/webhooks/github");
             AllowAnonymous(); 
         }
 
@@ -27,6 +28,8 @@ namespace WebhookGateway.Features.WebhooksGithub
 
             // webhook body 
             var payload = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync(ct);
+
+            var json = JsonSerializer.Deserialize<JsonElement>(payload);
 
             var command = new WebhooksGitHubCommand(deliveryId, signature, eventType, payload);
 

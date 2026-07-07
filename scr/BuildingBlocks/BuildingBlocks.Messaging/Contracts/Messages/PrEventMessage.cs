@@ -2,32 +2,41 @@
 {
     public sealed record PrEventMessage
     (
-        Guid EventId,
-        DateTimeOffset ReceivedAt,
+        string EventId,
+        DateTime ReceivedAt,
         string GitHubDeliveryId,
         string Action,
-        RepositoryInfo Repository,
-        PullRequestInfo PullRequest,
-        string RawPayload
-    ); 
+        Repository Repository,
+        PullRequest PullRequest 
+    );
 
-    public sealed class RepositoryInfo
-    {
-        public string FullName { get; init; } = string.Empty;          // "org/repo" — también es la partition key
-        public string DefaultBranch { get; init; } = string.Empty;
-        public string Language { get; init; } = string.Empty;
-        public string CloneUrl { get; init; } = string.Empty;
-    }
+    public record PullRequest(
+        int Number,
+        string Title,
+        string State,
+        string Url,
+        string HtmlUrl,
+        PullRequestUser User,
+        PullRequestHead Head,
+        PullRequestBase Base,
+        string DiffUrl,
+        DateTime CreatedAt,
+        DateTime UpdatedAt);
 
-    public sealed class PullRequestInfo
-    {
-        public int Number { get; init; }
-        public string Title { get; init; } = string.Empty;
-        public string HeadSha { get; init; } = string.Empty;
-        public string BaseSha { get; init; } = string.Empty;
-        public string HeadBranch { get; init; } = string.Empty;
-        public string BaseBranch { get; init; } = string.Empty;
-        public string Author { get; init; } = string.Empty;
-        public string DiffUrl { get; init; } = string.Empty;
-    }
+    public record PullRequestUser(string Login);
+
+    public record PullRequestHead(
+        string Sha,
+        string Ref);
+
+    public record PullRequestBase(
+        string Sha,
+        string Ref);
+
+    public record Repository(
+        string FullName,
+        string DefaultBranch,
+        string Language,
+        string CloneUrl,
+        string HtmlUrl);
 }

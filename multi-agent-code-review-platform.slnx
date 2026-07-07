@@ -8,6 +8,18 @@
     <Project Path="scr/BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj" Id="ff356a56-f9fc-40d5-a3a4-9754ef89ea16" />
   </Folder>
   <Folder Name="/scr/Services/" />
+  <Folder Name="/scr/Services/OrchestratorAgent/" />
+  <Folder Name="/scr/Services/OrchestratorAgent/Api/">
+    <Project Path="scr/Services/OrchestratorAgent/Api/OrchestratorAgent.Api/OrchestratorAgent.Api.csproj" Id="a6f8ea1f-88de-45d2-9b69-c6bcf225ce17" />
+  </Folder>
+  <Folder Name="/scr/Services/OrchestratorAgent/Core/">
+    <Project Path="scr/Services/OrchestratorAgent/Core/OrchestratorAgent.Application/OrchestratorAgent.Application.csproj" Id="0b978706-9861-4623-967d-ad28a00ddf2d" />
+    <Project Path="scr/Services/OrchestratorAgent/Core/OrchestratorAgent.Domain/OrchestratorAgent.Domain.csproj" Id="d12a0bea-9c5b-46a1-957b-a3bc0ab676ba" />
+  </Folder>
+  <Folder Name="/scr/Services/OrchestratorAgent/Infrastructure/">
+    <Project Path="scr/Services/OrchestratorAgent/Infrastructure/OrchestratorAgent.Infrastructure/OrchestratorAgent.Infrastructure.csproj" Id="548ab369-e5cf-4ef5-8828-3265ef80d7da" />
+    <Project Path="scr/Services/OrchestratorAgent/Infrastructure/OrchestratorAgent.Persistence/OrchestratorAgent.Persistence.csproj" Id="a76a62b9-48ec-4f73-853c-815838d7b35d" />
+  </Folder>
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>

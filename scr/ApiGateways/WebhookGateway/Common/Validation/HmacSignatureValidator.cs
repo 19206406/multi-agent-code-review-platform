@@ -22,7 +22,9 @@ namespace WebhookGateway.Common.Validation
             var expected = "sha256=" + Convert.ToHexString(hash).ToLowerInvariant();
 
             return CryptographicOperations.FixedTimeEquals(
-                Encoding.UTF8.GetBytes(expected), Encoding.UTF8.GetBytes(signature)); 
+                Encoding.UTF8.GetBytes(expected),
+                Encoding.UTF8.GetBytes(signature)
+            );
         }
     }
 }

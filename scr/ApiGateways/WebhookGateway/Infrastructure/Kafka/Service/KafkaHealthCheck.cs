@@ -1,7 +1,7 @@
-﻿using Confluent.Kafka;
+﻿using BuildingBlocks.Messaging.Kafka.Options;
+using Confluent.Kafka;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
-using WebhookGateway.Infrastructure.Kafka.Services;
 
 namespace WebhookGateway.Infrastructure.Kafka.Service
 {

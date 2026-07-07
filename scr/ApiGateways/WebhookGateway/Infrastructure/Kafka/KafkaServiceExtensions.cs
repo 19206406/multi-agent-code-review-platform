@@ -1,4 +1,4 @@
-﻿using WebhookGateway.Infrastructure.Kafka.Services;
+﻿using BuildingBlocks.Messaging.Kafka.Options;
 
 namespace WebhookGateway.Infrastructure.Kafka
 {
