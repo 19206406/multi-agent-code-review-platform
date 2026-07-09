@@ -117,6 +117,12 @@ namespace OrchestratorAgent.Persistence.Configurations.Orchestrator
                 .HasMaxLength(500)
                 .HasColumnName("github_comment_url");
 
+            //// relationship 
+            //builder.HasMany(a => a.AgentTaskStates)
+            //    .WithOne(e => e.PipelineRun)
+            //    .HasForeignKey(e => e.PipelineRunId)
+            //    .OnDelete(DeleteBehavior.Cascade); 
+
 
             // indexes 
             builder.HasIndex(e => e.CorrelationId)

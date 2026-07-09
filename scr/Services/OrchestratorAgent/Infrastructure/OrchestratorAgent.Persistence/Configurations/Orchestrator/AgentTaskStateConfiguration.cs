@@ -58,10 +58,17 @@ namespace OrchestratorAgent.Persistence.Configurations.Orchestrator
                 .HasColumnType("text")
                 .HasColumnName("validation_reason");
 
+            // relationship 
+            builder.HasOne(p => p.PipelineRun)
+                .WithMany(a => a.AgentTaskStates)
+                .HasForeignKey(p => p.PipelineRunId)
+                .OnDelete(DeleteBehavior.Cascade); 
+
             // indexes  
             builder.HasIndex(a => a.PipelineRunId)
                 .HasDatabaseName("idx_agent_tasks_pipeline");
             builder.HasIndex(a => new { a.PipelineRunId, a.AgentType })
+                .IsUnique()
                 .HasDatabaseName("idx_agent_tasks_unique"); 
         }
     }

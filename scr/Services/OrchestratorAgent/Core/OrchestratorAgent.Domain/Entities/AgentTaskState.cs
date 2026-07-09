@@ -11,6 +11,9 @@
         public int RetryCount { get; set; }
         public string LastError { get; set; } = string.Empty;
         public bool ValidationPassed { get; set; }
-        public string ValidationReason { get; set; } = string.Empty; 
+        public string ValidationReason { get; set; } = string.Empty;
+
+        // relationship 
+        public PipelineRun PipelineRun { get; set; } = default!; 
     }
 }

@@ -25,6 +25,9 @@
         public DateTimeOffset CompletedAt { get; set; }
         public DateTimeOffset FailedAt { get; set; }
         public int GithubCommentId { get; set; }
-        public string GithubCommentUrl { get; set; } = string.Empty; 
+        public string GithubCommentUrl { get; set; } = string.Empty;
+
+        // relationship 
+        public ICollection<AgentTaskState> AgentTaskStates { get; set; } = new List<AgentTaskState>(); 
     }
 }
