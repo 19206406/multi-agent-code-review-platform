@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\OrchestratorAgent.Application\OrchestratorAgent.Application.csproj" />
     <ProjectReference Include="..\..\Core\OrchestratorAgent.Domain\OrchestratorAgent.Domain.csproj" />
   </ItemGroup>
 

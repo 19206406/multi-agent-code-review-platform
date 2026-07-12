@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using OrchestratorAgent.Application.Contracts.Persistence;
+using OrchestratorAgent.Domain.Entities;
 
 namespace OrchestratorAgent.Persistence.Repositories
 {
-    internal class PipelineRunRepository
+    public class PipelineRunRepository : IPipelineRunRepository
     {
+        public Task CratePipelineRunAsync(PipelineRun pipeline)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
