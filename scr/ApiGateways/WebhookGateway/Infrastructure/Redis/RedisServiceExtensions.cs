@@ -8,8 +8,13 @@ namespace WebhookGateway.Infrastructure.Redis
         {
             var connectionString = configuration["Redis:ConnectionString"]!;
 
+            // connect fail or success 
+            var options = ConfigurationOptions.Parse(connectionString); 
+            options.AbortOnConnectFail = false;
+
             services.AddSingleton<IConnectionMultiplexer>(
-                ConnectionMultiplexer.Connect(connectionString));
+            ConnectionMultiplexer.Connect(connectionString));
+            
 
             // Enable distributed caching 
             services.AddStackExchangeRedisCache(options =>

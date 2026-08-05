@@ -24,6 +24,7 @@ namespace WebhookGateway.Features.WebhooksGithub
 
         public async Task<WebhooksGithubResponse> Handle(WebhooksGitHubCommand command, CancellationToken cancellationToken)
         {
+            // validations 
             if (!_validator.IsValid(command.RawPayload, command.Signature))
                 throw new UnauthorizedException("Unauthorized the signature does not match");
 

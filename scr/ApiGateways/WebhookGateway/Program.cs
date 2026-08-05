@@ -4,6 +4,7 @@ using FastEndpoints;
 using FastEndpoints.Swagger;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Scalar.AspNetCore;
 using System.Reflection;
 using WebhookGateway.Common.Options;
 using WebhookGateway.Common.Validation;
@@ -22,15 +23,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddFastEndpoints();
 
 // FastEndpoints swagger
-builder.Services.SwaggerDocument(options =>
-{
-    options.DocumentSettings = s =>
-    {
-        s.Title = "webhook-service-api";
-        s.Version = "v1";
-    };
-    options.AutoTagPathSegmentIndex = 0;
-});
+builder.Services.SwaggerDocument(); 
+//builder.Services.SwaggerDocument(options =>
+//{
+//    options.DocumentSettings = s =>
+//    {
+//        s.Title = "webhook-service-api";
+//        s.Version = "v1";
+//    };
+//    options.AutoTagPathSegmentIndex = 0;
+//});
 
 // options apppsettings.json 
 builder.Services.Configure<WebhookOptions>(
@@ -55,7 +57,7 @@ builder.Services.AddKafkaInfratructure(builder.Configuration);
 builder.Services.AddSingleton<PrEventProducer>(); 
 
 // MACSHA256 Validation 
-builder.Services.AddScoped<IHmacSignatureValidator, HmacSignatureValidator>(); 
+builder.Services.AddScoped<IHmacSignatureValidator, HmacSignatureValidator>();
 
 // Health-check 
 builder.Services.AddHealthChecks()
@@ -67,14 +69,17 @@ builder.Services.AddHealthChecks()
     name: "kafka:broker",
     tags: ["messaging", "infrastructure"]);
 
-//TODO: webhook -> tipo repositorio --- manejar solo tres tipos de eventos (opened, synchronize, reopened) 
 // Activar el tunel de ngrok con github. --- comando: ngrok start webhook-gateway
 
 var app = builder.Build();
 
 // FastEndpoints Middleware 
 app.UseFastEndpoints();
-app.UseSwaggerGen();
+app.UseSwaggerGen(options =>
+{
+    options.Path = "/openapi/{documentName}.json";
+});
+app.MapScalarApiReference();
 
 app.UseSwaggerUi();
 
