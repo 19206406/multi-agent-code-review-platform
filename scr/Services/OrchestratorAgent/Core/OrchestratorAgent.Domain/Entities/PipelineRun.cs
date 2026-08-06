@@ -4,7 +4,7 @@
     {
         public Guid Id { get; set; }
         public Guid CorrelationId { get; set; }
-        public string Status { get; set; } = string.Empty;
+        public StatusPipelineRun Status { get; set; } 
         public string RepositoryFullName { get; set; } = string.Empty;
         public int PrNumber { get; set; }
         public string PrTitle { get; set; } = string.Empty;
@@ -27,7 +27,15 @@
         public int GithubCommentId { get; set; }
         public string GithubCommentUrl { get; set; } = string.Empty;
 
-        // relationship 
-        public ICollection<AgentTaskState> AgentTaskStates { get; set; } = new List<AgentTaskState>(); 
+        // relationship 1:1
+        public AgentTaskState? AgentTaskState { get; set; }
+    }
+
+    public enum StatusPipelineRun
+    {
+        Received = 0,
+        Enriching = 1,
+        Completed = 2,
+        Failed = 3,
     }
 }
