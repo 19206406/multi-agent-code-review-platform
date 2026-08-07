@@ -59,10 +59,6 @@ namespace OrchestratorAgent.Persistence.Configurations.Orchestrator
                 .HasColumnName("validation_reason");
 
             // relationship 
-            builder.HasOne(p => p.PipelineRun)
-                .WithMany(a => a.AgentTaskStates)
-                .HasForeignKey(p => p.PipelineRunId)
-                .OnDelete(DeleteBehavior.Cascade); 
 
             // indexes  
             builder.HasIndex(a => a.PipelineRunId)
