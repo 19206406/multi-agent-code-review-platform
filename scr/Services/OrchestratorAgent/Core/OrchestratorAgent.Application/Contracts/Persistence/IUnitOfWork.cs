@@ -1,7 +1,7 @@
 ﻿namespace OrchestratorAgent.Application.Contracts.Persistence
 {
-    public interface IAgentTaskStateRepository
+    public interface IUnitOfWork
     {
-        
+        Task<int> SaveChangesAsync(); 
     }
 }

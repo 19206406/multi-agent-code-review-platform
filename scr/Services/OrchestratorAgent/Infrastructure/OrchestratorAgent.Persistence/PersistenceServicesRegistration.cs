@@ -17,6 +17,7 @@ namespace OrchestratorAgent.Persistence
 
 
             // repositories 
+            services.AddScoped<IUnitOfWork, UnitOfWork>(); 
             services.AddScoped<IPipelineRunRepository, PipelineRunRepository>();
             //services.AddScoped<IAgentTaskStateRepository, AgentTaskStateRepository>();  
 

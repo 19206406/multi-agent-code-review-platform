@@ -1,13 +1,16 @@
-﻿namespace BuildingBlocks.Messaging.Contracts.Messages
+﻿using System.Text.Json.Serialization;
+
+namespace BuildingBlocks.Messaging.Contracts.Messages
 {
     public sealed record PrEventMessage
     (
         string EventId,
-        DateTime ReceivedAt,
+        DateTimeOffset ReceivedAt,
         string GitHubDeliveryId,
         string Action,
         Repository Repository,
-        PullRequest PullRequest 
+        PullRequest PullRequest,
+        Sender Sender
     );
 
     public record PullRequest(
@@ -20,8 +23,27 @@
         PullRequestHead Head,
         PullRequestBase Base,
         string DiffUrl,
-        DateTime CreatedAt,
-        DateTime UpdatedAt);
+        DateTimeOffset CreatedAt,
+        DateTimeOffset UpdatedAt)
+    {
+        // No viene directo del JSON de GitHub; se deriva de User.Login
+        [JsonIgnore]
+        public string Author => User.Login;
+
+        // Aplanados para conveniencia del consumidor (Orchestrator),
+        // igual que en GithubPrPayload
+        [JsonIgnore]
+        public string HeadSha => Head.Sha;
+
+        [JsonIgnore]
+        public string BaseSha => Base.Sha;
+
+        [JsonIgnore]
+        public string HeadBranch => Head.Ref;
+
+        [JsonIgnore]
+        public string BaseBranch => Base.Ref;
+    }
 
     public record PullRequestUser(string Login);
 
@@ -39,4 +61,6 @@
         string Language,
         string CloneUrl,
         string HtmlUrl);
+
+    public record Sender(string Login);
 }

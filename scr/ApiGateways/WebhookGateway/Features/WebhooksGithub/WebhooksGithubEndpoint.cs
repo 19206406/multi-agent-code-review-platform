@@ -22,12 +22,12 @@ namespace WebhookGateway.Features.WebhooksGithub
         public override async Task HandleAsync(CancellationToken ct)
         {
 
-            var deliveryId = HttpContext.Request.Headers["X-GitHub-Delivery"].ToString();
-            var signature = HttpContext.Request.Headers["X-Hub-Signature-256"].ToString();
-            var eventType = HttpContext.Request.Headers["X-GitHub-Event"].ToString();
+            string deliveryId = HttpContext.Request.Headers["X-GitHub-Delivery"].ToString();
+            string signature = HttpContext.Request.Headers["X-Hub-Signature-256"].ToString();
+            string eventType = HttpContext.Request.Headers["X-GitHub-Event"].ToString();
 
             // webhook body 
-            var payload = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync(ct);
+            string payload = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync(ct);
 
             var json = JsonSerializer.Deserialize<JsonElement>(payload);
 

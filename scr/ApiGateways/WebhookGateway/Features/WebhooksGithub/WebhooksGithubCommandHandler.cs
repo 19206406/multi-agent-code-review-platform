@@ -63,7 +63,7 @@ namespace WebhookGateway.Features.WebhooksGithub
         {
             var messageEvent = new PrEventMessage(
                 Guid.CreateVersion7().ToString(),
-                DateTime.UtcNow,
+                DateTimeOffset.UtcNow,
                 command.DeliveryId,
                 payload.Action,
                 new Repository(
@@ -83,8 +83,8 @@ namespace WebhookGateway.Features.WebhooksGithub
                     new PullRequestBase(payload.PullRequest.Base.Sha, payload.PullRequest.Base.Ref),
                     payload.PullRequest.DiffUrl,
                     payload.PullRequest.CreatedAt,
-                    payload.PullRequest.UpdatedAt)
-                );
+                    payload.PullRequest.UpdatedAt), 
+                new Sender(payload.Sender.Login)); 
 
             return messageEvent; 
         }

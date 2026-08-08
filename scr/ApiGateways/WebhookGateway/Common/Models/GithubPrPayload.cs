@@ -1,42 +1,51 @@
-﻿namespace WebhookGateway.Common.Models
+﻿using System.Text.Json.Serialization;
+
+namespace WebhookGateway.Common.Models
 {
-    // sealed 
+    // sealed
     public record GithubPrPayload(
-        string Action, 
-        int Number, 
-        PullRequestPayload PullRequest, 
-        RepositoryPayload Repository, 
-        SenderPayload Sender);
+        string Action,
+        int Number,
+        PullRequestPayload PullRequest,
+        RepositoryPayload Repository,
+        SenderPayload Sender); 
 
     public record PullRequestPayload(
-        int Number, 
-        string Title, 
-        string State, 
-        string Url, 
+        int Number,
+        string Title,
+        string State,
+        string Url,
         string HtmlUrl,
-        PullRequestUserPayload User, 
+        PullRequestUserPayload User,
         PullRequestHeadPayload Head,
-        PullRequestBasePayload Base, 
-        string DiffUrl, 
-        DateTime CreatedAt, 
-        DateTime UpdatedAt);
+        PullRequestBasePayload Base,
+        string DiffUrl,
+        DateTimeOffset CreatedAt,
+        DateTimeOffset UpdatedAt)
+    {
+        // No existe "author" en el JSON; se deriva de user.login
+        [JsonIgnore]
+        public string Author => User.Login;
+    }
 
     public record PullRequestUserPayload(string Login);
+
     public record PullRequestHeadPayload(
-        string Sha, 
-        string Ref);
-    public record PullRequestBasePayload(
-        string Sha, 
+        string Sha,
         string Ref);
 
-    // -------------------------------------------------------------- 
+    public record PullRequestBasePayload(
+        string Sha,
+        string Ref);
+
+    // --------------------------------------------------------------
 
     public record RepositoryPayload(
-        string FullName, 
-        string DefaultBranch, 
-        string Language, 
-        string CloneUrl, 
+        string FullName,
+        string DefaultBranch,
+        string Language,
+        string CloneUrl,
         string HtmlUrl);
-    public record SenderPayload(string Login); 
 
+    public record SenderPayload(string Login);
 }
