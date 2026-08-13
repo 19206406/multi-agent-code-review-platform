@@ -4,6 +4,8 @@ namespace OrchestratorAgent.Application.Contracts.Persistence
 {
     public interface IPipelineRunRepository
     {
-        Task CratePipelineRunAsync(PipelineRun pipeline); 
+        Task CratePipelineRunAsync(PipelineRun pipeline);
+
+        Task<PipelineRun?> PipelineRunByIdAsync(Guid id);
     }
 }

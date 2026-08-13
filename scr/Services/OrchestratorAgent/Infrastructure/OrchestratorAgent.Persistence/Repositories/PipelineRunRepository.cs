@@ -1,4 +1,5 @@
-﻿using OrchestratorAgent.Application.Contracts.Persistence;
+﻿using Microsoft.EntityFrameworkCore;
+using OrchestratorAgent.Application.Contracts.Persistence;
 using OrchestratorAgent.Domain.Entities;
 using OrchestratorAgent.Persistence.Context;
 
@@ -15,8 +16,16 @@ namespace OrchestratorAgent.Persistence.Repositories
 
         public async Task CratePipelineRunAsync(PipelineRun pipeline)
         {
-            _context.Add(pipeline);
-            await _context.SaveChangesAsync(); 
+            await _context.AddAsync(pipeline);
+            await _context.SaveChangesAsync();
+        }
+
+        public Task<PipelineRun?> PipelineRunByIdAsync(Guid id)
+        {
+            var pipelineRun = 
+                _context.PipelineRuns.FirstOrDefaultAsync(p => p.Id == id);
+            
+            return pipelineRun;
         }
     }
 }

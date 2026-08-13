@@ -16,6 +16,7 @@ using WebhookGateway.Infrastructure.Redis.Idempotency;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// TODO: Raise an exception when an error occurs upon receiving a webhook.
 
 // TODO: create partitions, topics and brokers_count etc... 
 
